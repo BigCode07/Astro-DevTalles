@@ -1,16 +1,31 @@
 ---
+import Navbar from "../components/Navbar.astro";
+import MainLayouts from "../layouts/MainLayout.astro";
 
+// Server Only
+const name = "Astro";
+const title = 'Home Page';
 ---
+<MainLayouts title="Home Page">
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+		<h1>{name}</h1>
+		<p>Momento actual: {new Date().toLocaleString()}</p>
+		<p id="current-time">Momento actual: </p>
+
+
+
+
+		<script>
+import { callSafely } from "astro:actions";
+
+			// Client Only
+			const currentYear: number = new Date().getFullYear();
+			const currentTimeParagraph = document.querySelector('#current-time') as HTMLParagraphElement;
+
+		
+			currentTimeParagraph.innerText = `Momento actual real: ${new Date().toLocaleString()}`;
+
+			
+		</script>
+</MainLayouts>
+
