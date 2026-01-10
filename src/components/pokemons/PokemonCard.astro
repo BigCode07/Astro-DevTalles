@@ -2,14 +2,28 @@
 interface Props {
   name: string;
   url: string;
+  isBig?: boolean;
 }
 
-const { name, url } = Astro.props;
+const { name, url, isBig = false } = Astro.props;
 const id = url.split("/").at(-2);
-const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${isBig ? 'other/official-artwork' : ''}/${id}.png`
 ---
 
-<a href={`/pokemons/${name}`} class="rounded border flex flex-col justify-center items-center p-2">
-    <img src={imageSrc} alt={name}>
-    <span class="capitalize">{name}</span>
-</a>
+{isBig ? (
+  <div class="bg-gradient-to-br from-cyan-300 to-blue-400 rounded-3xl border-6 border-black flex flex-col justify-center items-center p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <img src={imageSrc} alt={name} class="w-96 h-96 object-contain drop-shadow-2xl">
+    <span class="capitalize text-white font-black text-4xl mt-6" style="-webkit-text-stroke: 3px #000; text-stroke: 3px #000; paint-order: stroke fill;">{name}</span>
+  </div>
+) : (
+  <a
+    href={`/pokemons/${name}`}
+    class="bg-gradient-to-br from-pink-300 via-yellow-300 to-cyan-300 rounded-2xl border-5 border-black flex flex-col justify-center items-center p-4 hover:scale-110 hover:rotate-2 transition-all duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transform"
+    style="min-height: 160px;"
+  >
+    <div class="bg-white rounded-full p-3 mb-3 border-4 border-black shadow-inner">
+      <img src={imageSrc} alt={name} class="w-20 h-20 object-contain">
+    </div>
+    <span class="capitalize font-black text-black text-base" style="-webkit-text-stroke: 1px #FFF; text-stroke: 1px #FFF; paint-order: stroke fill;">{name}</span>
+  </a>
+)}

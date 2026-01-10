@@ -17,16 +17,34 @@ console.log(data);
 ---
 
 <MainLayout title={title}>
-  <h1 class="text-3xl">Listado de Pokemons</h1>
-  <hr />
-  <section
-    aria-label="Listado de Pokemones"
-    class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-3 gap-4 mt-5"
-  >
-    {
-      data.results.map((pokemones) => (
-        <PokemonCard name={pokemones.name} url={pokemones.url} />
-      ))
-    }
-  </section>
+  <div class="min-h-screen bg-orange-400 py-10 px-4" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.15) 35px, rgba(255,255,255,.15) 70px);">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-10 relative">
+        <div class="inline-block transform -rotate-2">
+          <h1 class="text-7xl font-black mb-2 relative inline-block" style="color: #FF1493; -webkit-text-stroke: 6px #000; text-stroke: 6px #000; paint-order: stroke fill; letter-spacing: -2px; transform: skew(-5deg);">
+            POKÉDEX
+          </h1>
+        </div>
+        <div class="inline-block transform rotate-3 ml-4">
+          <span class="text-6xl">⚡</span>
+        </div>
+        <div class="mt-2">
+          <p class="text-3xl font-black inline-block px-6 py-2 bg-yellow-300 border-4 border-black transform -rotate-1" style="box-shadow: 6px 6px 0px rgba(0,0,0,1);">
+            ¡ATRÁPALOS TODOS!
+          </p>
+        </div>
+      </div>
+
+      <section
+        aria-label="Listado de Pokemones"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
+      >
+        {
+          data.results.map((pokemones) => (
+            <PokemonCard name={pokemones.name} url={pokemones.url} />
+          ))
+        }
+      </section>
+    </div>
+  </div>
 </MainLayout>

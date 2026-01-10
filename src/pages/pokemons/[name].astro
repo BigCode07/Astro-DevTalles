@@ -1,18 +1,59 @@
 ---
 import type { GetStaticPaths } from "astro";
 import MainLayout from "../../layouts/MainLayout.astro";
+import PokemonCard from "../../components/pokemons/PokemonCard.astro";
 
-export const getStaticPaths = (() => {
-    
-    return [
-        {params: {name: "bulbasaur"}},
-        {params: {name: "charmander"}},
-        {params: {name: "squirtle"}},
-    ];
+export const getStaticPaths = (async () => {
+  const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+  const data = await resp.json();
+  return await Promise.all(
+    data.results.map(async (pokemon: { name: string; url: string }) => {
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`);
+      const pokemonData = await response.json();
+      return {
+        params: { name: pokemon.name },
+        props: { url: pokemon.url || `https://pokeapi.co/api/v2/pokemon/${pokemonData.id}/` }
+      };
+    })
+  );
 }) satisfies GetStaticPaths;
 
 const { name } = Astro.params;
+const { url } = Astro.props;
+
+const id = url.split("/").at(-2);
+const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;    
 ---
-<MainLayout title="Algun Pokemon">
-    <h1 class="text-3xl">{name}</h1>
+
+<MainLayout title={name}>
+  <section class="min-h-screen bg-lime-400 flex flex-col justify-center items-center p-10" style="background-image: radial-gradient(circle, rgba(255,255,255,.2) 1px, transparent 1px); background-size: 30px 30px;">
+    <div class="mb-8 text-center transform -rotate-2">
+      <h1 class="text-8xl capitalize font-black mb-4 inline-block" style="color: #00FF00; -webkit-text-stroke: 8px #000; text-stroke: 8px #000; paint-order: stroke fill; letter-spacing: -3px; transform: skew(-8deg);">
+        {name}
+      </h1>
+      <div class="inline-block ml-4 transform rotate-12">
+        <span class="text-7xl">⭐</span>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-pink-400 to-purple-500 rounded-3xl border-8 border-black p-2 shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] transform rotate-1">
+      <div class="bg-white rounded-2xl p-10 border-6 border-black">
+        <PokemonCard name={name} url={url} isBig />
+        <audio controls class="mt-6 w-full">
+          <source src={audioSrc} type="audio/mpeg" />
+          Tu navegador no soporta el elemento de audio.
+        </audio>
+      </div>
+    </div>
+
+    <div class="mt-12 transform -rotate-1">
+      <a
+        href="/"
+        class="bg-red-500 text-white font-black text-2xl px-10 py-5 inline-block border-6 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-3px] transition-all duration-200 transform skew-x-[-5deg]"
+        style="-webkit-text-stroke: 2px #000; text-stroke: 2px #000; paint-order: stroke fill;"
+      >
+        ← VOLVER
+      </a>
+    </div>
+  </section>
 </MainLayout>
