@@ -1,11 +1,15 @@
 ---
+import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+import { siteInfo } from '../consts/site-info';
 
 interface Props {
     title: string;
+	image?: string;
+	description?: string; 
 }
 
-const {title} = Astro.props;
+const {title = siteInfo.title, description = siteInfo.description, image} = Astro.props;
 ---
 
 <html lang="en">
@@ -14,7 +18,182 @@ const {title} = Astro.props;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
+
+        <!-- SEO -->
+		<meta name="description" content={description} />
+		{image && <meta name="image" content={image} />}
+		<meta property="author" content="BigCode" />
+
+		<!-- OG Metatags -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		{image && <meta property="og:image" content={image} />}
+
+		<!-- Required -->
 		<title>{title}</title>
+
+		<ClientRouter />
+
+		<style is:global>
+			@view-transition {
+				navigation: auto;
+			}
+
+			/* Animaciones personalizadas para las transiciones */
+			::view-transition-old(root),
+			::view-transition-new(root) {
+				animation-duration: 0.4s;
+				animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+			}
+
+			::view-transition-old(root) {
+				animation-name: fade-out;
+			}
+
+			::view-transition-new(root) {
+				animation-name: fade-in;
+			}
+
+			@keyframes fade-out {
+				to {
+					opacity: 0;
+					transform: scale(0.95);
+				}
+			}
+
+			@keyframes fade-in {
+				from {
+					opacity: 0;
+					transform: scale(0.95);
+				}
+			}
+
+			/* Animación especial para las tarjetas de Pokémon */
+			::view-transition-old(pokemon-card),
+			::view-transition-new(pokemon-card) {
+				animation-duration: 0.5s;
+			}
+
+			::view-transition-old(pokemon-card) {
+				animation-name: slide-out;
+			}
+
+			::view-transition-new(pokemon-card) {
+				animation-name: slide-in;
+			}
+
+			@keyframes slide-out {
+				to {
+					opacity: 0;
+					transform: translateY(-20px);
+				}
+			}
+
+			@keyframes slide-in {
+				from {
+					opacity: 0;
+					transform: translateY(20px);
+				}
+			}
+
+			/* Estilos 3D optimizados para las tarjetas de Pokémon */
+			.pokemon-card {
+				transform-style: preserve-3d;
+				transition: transform 0.3s ease-out;
+				will-change: transform;
+				backface-visibility: hidden;
+			}
+
+			.pokemon-card:hover {
+				transform: translateY(-20px) translateZ(40px) scale(1.12);
+				z-index: 100;
+			}
+
+			.pokemon-card-inner {
+				transform-style: preserve-3d;
+				transition: transform 0.3s ease-out;
+				backface-visibility: hidden;
+			}
+
+			.pokemon-card:hover .pokemon-card-inner {
+				transform: translateZ(20px);
+			}
+
+			/* Efecto 3D optimizado para las imágenes */
+			.pokemon-image-3d {
+				transform-style: preserve-3d;
+				transition: transform 0.3s ease-out;
+				will-change: transform;
+				backface-visibility: hidden;
+			}
+
+			.pokemon-card:hover .pokemon-image-3d {
+				transform: translateZ(30px) scale(1.25);
+			}
+
+			/* Efecto de brillo simplificado */
+			.pokemon-card::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+				opacity: 0;
+				transition: opacity 0.3s ease;
+				pointer-events: none;
+				border-radius: 0.5rem;
+				z-index: 10;
+			}
+
+			.pokemon-card:hover::before {
+				opacity: 1;
+			}
+
+			/* Animación flotante para tarjetas grandes */
+			.pokemon-big-card {
+				animation: float-3d 4s ease-in-out infinite;
+				transform-style: preserve-3d;
+			}
+
+			@keyframes float-3d {
+				0%, 100% {
+					transform: translateY(0) rotateY(0deg);
+				}
+				25% {
+					transform: translateY(-10px) rotateY(5deg);
+				}
+				50% {
+					transform: translateY(-15px) rotateY(0deg);
+				}
+				75% {
+					transform: translateY(-10px) rotateY(-5deg);
+				}
+			}
+
+			/* Efecto parallax optimizado */
+			.pokemon-card {
+				position: relative;
+			}
+
+			.pokemon-card .pokemon-badge {
+				transition: transform 0.3s ease-out;
+				transform-style: preserve-3d;
+				backface-visibility: hidden;
+			}
+
+			.pokemon-card:hover .pokemon-badge {
+				transform: translateZ(15px) scale(1.05);
+			}
+
+			/* Sombras optimizadas con box-shadow en lugar de drop-shadow */
+			.pokemon-card:hover {
+				box-shadow:
+					0 30px 60px rgba(0,0,0,0.3),
+					0 15px 30px rgba(0,0,0,0.2);
+			}
+		</style>
 	</head>
 	<body class="m-0 p-0">
 		<main>

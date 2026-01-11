@@ -25,35 +25,52 @@ const id = url.split("/").at(-2);
 const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;    
 ---
 
-<MainLayout title={name}>
-  <section class="min-h-screen bg-lime-400 flex flex-col justify-center items-center p-10" style="background-image: radial-gradient(circle, rgba(255,255,255,.2) 1px, transparent 1px); background-size: 30px 30px;">
-    <div class="mb-8 text-center transform -rotate-2">
-      <h1 class="text-8xl capitalize font-black mb-4 inline-block" style="color: #00FF00; -webkit-text-stroke: 8px #000; text-stroke: 8px #000; paint-order: stroke fill; letter-spacing: -3px; transform: skew(-8deg);">
-        {name}
-      </h1>
-      <div class="inline-block ml-4 transform rotate-12">
-        <span class="text-7xl">⭐</span>
-      </div>
-    </div>
+<MainLayout title={`Pokemon - ${name}`}``}>
+  <div class="min-h-screen w-full py-4 sm:py-10" style="background: linear-gradient(to bottom, #f4e4c1 0%, #e8d4a8 100%); background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOSIgbnVtT2N0YXZlcz0iNCIgLz48ZmVDb2xvck1hdHJpeCB0eXBlPSJzYXR1cmF0ZSIgdmFsdWVzPSIwIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZSkiIG9wYWNpdHk9IjAuMDUiIC8+PC9zdmc+'); display: flex; align-items: center; justify-content: center;">
+    <div class="container mx-auto px-3 sm:px-4" style="max-width: 1024px;">
 
-    <div class="bg-gradient-to-br from-pink-400 to-purple-500 rounded-3xl border-8 border-black p-2 shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] transform rotate-1">
-      <div class="bg-white rounded-2xl p-10 border-6 border-black">
-        <PokemonCard name={name} url={url} isBig />
-        <audio controls class="mt-6 w-full">
-          <source src={audioSrc} type="audio/mpeg" />
-          Tu navegador no soporta el elemento de audio.
-        </audio>
+      <!-- Título -->
+      <div class="text-center mb-4 sm:mb-8">
+        <div class="inline-block relative bg-amber-100 px-3 sm:px-12 py-2 sm:py-6 sm:transform sm:-rotate-1 border-2 sm:border-4 border-amber-800" style="box-shadow: 2px 2px 0px rgba(0,0,0,0.2); background-image: linear-gradient(45deg, #fef3c7 25%, transparent 25%, transparent 75%, #fef3c7 75%, #fef3c7), linear-gradient(45deg, #fef3c7 25%, transparent 25%, transparent 75%, #fef3c7 75%, #fef3c7); background-size: 20px 20px; background-position: 0 0, 10px 10px;">
+          <h1 class="text-lg sm:text-5xl md:text-6xl font-black capitalize" style="color: #b45309; font-family: 'Courier New', monospace; letter-spacing: 0.5px; text-shadow: 2px 2px 0px rgba(0,0,0,0.1);">
+            {name}
+          </h1>
+          <div class="hidden sm:block absolute -top-3 -left-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
+          <div class="hidden sm:block absolute -top-3 -right-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform -rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
+          <div class="hidden sm:block absolute -bottom-3 -left-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform -rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
+          <div class="hidden sm:block absolute -bottom-3 -right-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
+        </div>
+        <div class="mt-3 sm:mt-4">
+          <span class="text-base sm:text-4xl transform rotate-12 inline-block">⭐</span>
+        </div>
       </div>
-    </div>
 
-    <div class="mt-12 transform -rotate-1">
-      <a
-        href="/"
-        class="bg-red-500 text-white font-black text-2xl px-10 py-5 inline-block border-6 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[-3px] transition-all duration-200 transform skew-x-[-5deg]"
-        style="-webkit-text-stroke: 2px #000; text-stroke: 2px #000; paint-order: stroke fill;"
-      >
-        ← VOLVER
-      </a>
+      <!-- Tarjeta del Pokémon -->
+      <div class="text-center mb-4 sm:mb-8">
+        <div class="inline-block bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg sm:rounded-3xl border-2 sm:border-8 border-black p-0.5 sm:p-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] sm:shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] sm:transform sm:rotate-1" style="max-width: 280px; width: 100%;">
+          <div class="bg-white rounded-md sm:rounded-2xl p-2 sm:p-10 border-6 border-black">
+            <PokemonCard name={name} url={url} isBig />
+            <div class="mt-2 sm:mt-6 bg-amber-50 border-2 sm:border-4 border-amber-800 p-1.5 sm:p-4 sm:transform sm:-rotate-1" style="box-shadow: 1px 1px 0px rgba(0,0,0,0.2);">
+              <audio controls class="w-full" style="filter: sepia(0.3) saturate(0.8); height: 32px;">
+                <source src={audioSrc} type="audio/mpeg" />
+                Tu navegador no soporta el elemento de audio.
+              </audio>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón -->
+      <div class="text-center">
+        <button
+          onclick="window.location.href = sessionStorage.getItem('pokemonListPage') ? `/pokemons/page/${sessionStorage.getItem('pokemonListPage')}` : '/'"
+          class="bg-red-600 text-white font-black text-xs sm:text-2xl px-3 sm:px-10 py-2 sm:py-4 border-2 sm:border-4 border-red-900 sm:transform sm:rotate-1 hover:rotate-0 transition-transform duration-200 cursor-pointer inline-block"
+          style="font-family: 'Courier New', monospace; box-shadow: 2px 2px 0px rgba(0,0,0,0.3);"
+        >
+          ← VOLVER
+        </button>
+      </div>
+
     </div>
-  </section>
+  </div>
 </MainLayout>

@@ -3,27 +3,46 @@ interface Props {
   name: string;
   url: string;
   isBig?: boolean;
+  page?: number;
 }
 
-const { name, url, isBig = false } = Astro.props;
+const { name, url, isBig = false, page } = Astro.props;
 const id = url.split("/").at(-2);
 const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${isBig ? 'other/official-artwork' : ''}/${id}.png`
 ---
 
 {isBig ? (
-  <div class="bg-gradient-to-br from-cyan-300 to-blue-400 rounded-3xl border-6 border-black flex flex-col justify-center items-center p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-    <img src={imageSrc} alt={name} class="w-96 h-96 object-contain drop-shadow-2xl">
-    <span class="capitalize text-white font-black text-4xl mt-6" style="-webkit-text-stroke: 3px #000; text-stroke: 3px #000; paint-order: stroke fill;">{name}</span>
+  <div class="pokemon-big-card bg-white rounded-lg border-2 sm:border-8 border-amber-900 flex flex-col justify-center items-center p-3 sm:p-8 relative w-full" style="box-shadow: 0 3px 12px rgba(0,0,0,0.2), inset 0 0 20px rgba(0,0,0,0.05); background: linear-gradient(135deg, #ffffff 0%, #fef3c7 100%); transform-style: preserve-3d;">
+    <div class="hidden sm:block absolute -top-6 -left-6 w-24 h-12 bg-yellow-100 border-2 border-yellow-300 transform rotate-45 opacity-80" style="box-shadow: 2px 2px 8px rgba(0,0,0,0.2);"></div>
+    <div class="hidden sm:block absolute -top-6 -right-6 w-24 h-12 bg-yellow-100 border-2 border-yellow-300 transform -rotate-45 opacity-80" style="box-shadow: 2px 2px 8px rgba(0,0,0,0.2);"></div>
+    <div class="hidden sm:block absolute -bottom-6 -left-6 w-24 h-12 bg-yellow-100 border-2 border-yellow-300 transform -rotate-45 opacity-80" style="box-shadow: 2px 2px 8px rgba(0,0,0,0.2);"></div>
+    <div class="hidden sm:block absolute -bottom-6 -right-6 w-24 h-12 bg-yellow-100 border-2 border-yellow-300 transform rotate-45 opacity-80" style="box-shadow: 2px 2px 8px rgba(0,0,0,0.2);"></div>
+    <div class="flex items-center justify-center w-full">
+      <img src={imageSrc} alt={name} class="w-36 h-36 sm:w-80 sm:h-80 md:w-96 md:h-96 object-contain drop-shadow-2xl pokemon-image-3d" style="transform-style: preserve-3d;" transition:name={`pokemon-${id}`} transition:animate="initial">
+    </div>
+    <div class="flex items-center justify-center w-full mt-2 sm:mt-6">
+      <span class="capitalize font-black text-base sm:text-3xl md:text-4xl px-2 sm:px-4 py-1 sm:py-2 bg-red-600 text-white text-center" style="font-family: 'Courier New', monospace; letter-spacing: 0.3px; box-shadow: 2px 2px 0px rgba(0,0,0,0.3);" transition:name={`pokemon-name-${id}`}>{name}</span>
+    </div>
   </div>
 ) : (
   <a
     href={`/pokemons/${name}`}
-    class="bg-gradient-to-br from-pink-300 via-yellow-300 to-cyan-300 rounded-2xl border-5 border-black flex flex-col justify-center items-center p-4 hover:scale-110 hover:rotate-2 transition-all duration-200 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transform"
-    style="min-height: 160px;"
+    onclick={page ? `sessionStorage.setItem('pokemonListPage', '${page}')` : ''}
+    class="pokemon-card bg-white rounded-lg border-4 border-gray-400 flex flex-col justify-center items-center p-4 transition-all duration-300 relative group overflow-hidden"
+    style="min-height: 200px; box-shadow: 4px 4px 8px rgba(0,0,0,0.2), inset 0 0 10px rgba(0,0,0,0.03); background: linear-gradient(135deg, #ffffff 0%, #fefce8 100%); transform-style: preserve-3d; perspective: 1000px;"
+    transition:name={`pokemon-card-${id}`}
   >
-    <div class="bg-white rounded-full p-3 mb-3 border-4 border-black shadow-inner">
-      <img src={imageSrc} alt={name} class="w-20 h-20 object-contain">
+    <div class="absolute -top-2 left-1/2 transform -translate-x-1/2 w-16 h-6 bg-yellow-100 border border-yellow-300 opacity-70 group-hover:opacity-90 transition-all pokemon-badge" style="box-shadow: 1px 1px 3px rgba(0,0,0,0.2); transform-style: preserve-3d;"></div>
+    <div class="absolute top-2 right-2 w-8 h-8 bg-amber-200 rounded-full border-2 border-amber-400 flex items-center justify-center text-xs font-bold text-amber-900 pokemon-badge" style="font-family: 'Courier New', monospace; transform-style: preserve-3d;">#{id}</div>
+    <div class="bg-gradient-to-br from-blue-100 to-purple-100 rounded-lg p-3 mb-3 border-2 border-gray-300 pokemon-card-inner" style="transform-style: preserve-3d;">
+      <img src={imageSrc} alt={name} class="w-24 h-24 object-contain pokemon-image-3d" style="transform-style: preserve-3d;" transition:name={`pokemon-${id}`} transition:animate="initial">
     </div>
-    <span class="capitalize font-black text-black text-base" style="-webkit-text-stroke: 1px #FFF; text-stroke: 1px #FFF; paint-order: stroke fill;">{name}</span>
+    <span class="capitalize font-bold text-black text-sm text-center px-2 relative z-10" style="font-family: 'Courier New', monospace; letter-spacing: 1px; transform-style: preserve-3d;" transition:name={`pokemon-name-${id}`}>{name}</span>
+    <div class="mt-2 w-full h-px bg-gray-300 relative z-10"></div>
+    <div class="mt-2 flex gap-1 relative z-10">
+      <div class="w-2 h-2 bg-red-400 rounded-full"></div>
+      <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+      <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+    </div>
   </a>
 )}
