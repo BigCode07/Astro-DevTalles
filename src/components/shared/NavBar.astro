@@ -1,0 +1,49 @@
+---
+const links = [
+    { href: "/", label: "HOME", icon: "🏠" },
+    { href: "/pokemons/page/1", label: "ALBUM", icon: "📖" },
+    { href: "/favorites", label: "FAVORITES", icon: "⭐" },
+]
+---
+
+<nav class="w-full py-2 md:py-4 px-2 md:px-4 relative overflow-hidden" style="background: linear-gradient(to bottom, #dc2626 0%, #991b1b 50%, #7f1d1d 100%); border-bottom: 4px md:border-bottom-8 solid #000; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.1);">
+    <!-- Patrón de puntos tipo Game Boy -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 8px 8px;"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+        <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:gap-4">
+            <!-- Logo/Título estilo Game Boy -->
+            <a href="/" class="flex items-center gap-2 md:gap-3 group justify-center md:justify-start">
+                <div class="w-10 h-10 md:w-14 md:h-14 bg-yellow-400 rounded-lg border-2 md:border-4 border-black flex items-center justify-center transform group-hover:scale-110 transition-all duration-200 relative" style="box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.4);">
+                    <span class="text-xl md:text-3xl">⚡</span>
+                    <div class="absolute -top-1 -right-1 w-2 h-2 md:w-3 md:h-3 bg-red-500 rounded-full border-2 border-black animate-pulse"></div>
+                </div>
+                <div class="flex flex-col">
+                    <h1 class="text-base md:text-2xl font-black text-yellow-300 retro-text tracking-wider" style="text-shadow: 2px 2px 0px #000, -1px -1px 0px rgba(0,0,0,0.5);">
+                        POKÉDEX
+                    </h1>
+                    <span class="text-[7px] md:text-xs text-yellow-400 font-bold tracking-widest hidden sm:block" style="font-family: 'Courier New', monospace;">GOTTA CATCH 'EM ALL!</span>
+                </div>
+            </a>
+
+            <!-- Navegación tipo botones de Game Boy -->
+            <div class="flex items-center justify-center gap-1 md:gap-3">
+                {links.map((link) => (
+                    <a
+                        href={link.href}
+                        class="bg-gradient-to-b from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-black font-bold px-2 py-1.5 md:px-5 md:py-3 border-2 md:border-4 border-black rounded-md md:rounded-lg transform hover:scale-105 active:scale-95 transition-all duration-150 text-[9px] md:text-sm shadow-lg relative overflow-hidden flex items-center gap-1"
+                        style="box-shadow: 0 2px 0px #000, 0 3px 4px rgba(0,0,0,0.4); font-family: 'Press Start 2P', monospace;"
+                    >
+                        <span class="text-xs md:hidden">{link.icon}</span>
+                        <span class="relative z-10 hidden sm:inline">{link.label}</span>
+                        <span class="relative z-10 sm:hidden text-[8px] leading-tight">{link.label}</span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-10"></div>
+                    </a>
+                ))}
+            </div>
+        </div>
+    </div>
+
+    <!-- Línea decorativa superior -->
+    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent opacity-50"></div>
+</nav>

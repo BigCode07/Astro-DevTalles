@@ -8,7 +8,7 @@ import "../styles/global.css";
 const title = "Pokemon Static | Home";
 
 // Obtener solo 10 pokemones para la página principal
-const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=10&offset=0");
+const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=12&offset=0");
 if (!resp.ok) {
   console.log("Error en el fetch");
 }
@@ -18,34 +18,60 @@ const data = (await resp.json()) as PokemonListResponse;
 // Obtener el total de pokemones para calcular páginas
 const totalResp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=1");
 const totalData = (await totalResp.json()) as PokemonListResponse;
-const totalPages = Math.ceil(totalData.count / 10);
+const totalPages = Math.ceil(totalData.count / 12);
 ---
 
 <MainLayout title={title}>
-  <div class="min-h-screen w-full py-6 sm:py-10 px-3 sm:px-4" style="background: linear-gradient(to bottom, #f4e4c1 0%, #e8d4a8 100%); background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuOSIgbnVtT2N0YXZlcz0iNCIgLz48ZmVDb2xvck1hdHJpeCB0eXBlPSJzYXR1cmF0ZSIgdmFsdWVzPSIwIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZSkiIG9wYWNpdHk9IjAuMDUiIC8+PC9zdmc+');">
-    <div class="max-w-7xl mx-auto">
-      <!-- Título -->
+  <div class="min-h-screen w-full py-6 sm:py-10 px-3 sm:px-4 relative overflow-hidden" style="background: linear-gradient(135deg, #9bbc0f 0%, #8bac0f 50%, #306230 100%);">
+    <!-- Patrón de fondo tipo Game Boy -->
+    <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+
+    <!-- Patrón de puntos -->
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle, #000 2px, transparent 2px); background-size: 20px 20px;"></div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
+      <!-- Título estilo Game Boy Screen -->
       <div class="text-center mb-8 sm:mb-12">
-        <div class="inline-block bg-amber-100 px-4 sm:px-12 py-3 sm:py-6 sm:transform sm:-rotate-1 border-2 sm:border-4 border-amber-800 relative" style="box-shadow: 4px 4px 0px rgba(0,0,0,0.2); background-image: linear-gradient(45deg, #fef3c7 25%, transparent 25%, transparent 75%, #fef3c7 75%, #fef3c7), linear-gradient(45deg, #fef3c7 25%, transparent 25%, transparent 75%, #fef3c7 75%, #fef3c7); background-size: 20px 20px; background-position: 0 0, 10px 10px;">
-          <h1 class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-1 sm:mb-2 text-center" style="color: #b45309; font-family: 'Courier New', monospace; letter-spacing: 1px; text-shadow: 2px 2px 0px rgba(0,0,0,0.1);">
-            MI ÁLBUM POKÉMON
-          </h1>
-          <div class="hidden sm:block absolute -top-3 -left-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
-          <div class="hidden sm:block absolute -top-3 -right-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform -rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
-          <div class="hidden sm:block absolute -bottom-3 -left-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform -rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
-          <div class="hidden sm:block absolute -bottom-3 -right-3 w-16 h-8 bg-yellow-200 border-2 border-yellow-400 transform rotate-45 opacity-70" style="box-shadow: 2px 2px 4px rgba(0,0,0,0.2);"></div>
+        <!-- Pantalla tipo Game Boy -->
+        <div class="inline-block bg-gradient-to-br from-gray-800 via-gray-900 to-black px-6 sm:px-12 py-6 sm:py-10 border-8 border-black rounded-3xl relative" style="box-shadow: 0 16px 32px rgba(0,0,0,0.6), inset 0 4px 8px rgba(255,255,255,0.1);">
+          <!-- Pantalla interior -->
+          <div class="bg-gradient-to-br from-amber-100 to-amber-200 px-4 sm:px-8 py-4 sm:py-6 border-4 border-gray-700 rounded-xl relative overflow-hidden" style="box-shadow: inset 0 4px 12px rgba(0,0,0,0.3), 0 2px 4px rgba(255,255,255,0.2);">
+            <!-- Efecto de escaneo CRT -->
+            <div class="absolute inset-0 opacity-30 pointer-events-none" style="background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+
+            <h1 class="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-center retro-text relative z-10" style="color: #0f380f; text-shadow: 2px 2px 0px rgba(155, 188, 15, 0.3);">
+              POKEMON
+            </h1>
+            <p class="text-xs sm:text-sm md:text-base font-bold text-center mt-2 retro-text" style="color: #306230;">
+              ALBUM COLLECTION
+            </p>
+          </div>
+
+          <!-- LED indicador -->
+          <div class="absolute -right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full border-2 border-black animate-pulse" style="box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), inset 0 1px 2px rgba(255,255,255,0.5);"></div>
+
+          <!-- Tornillos decorativos -->
+          <div class="absolute top-2 left-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
+          <div class="absolute top-2 right-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
+          <div class="absolute bottom-2 left-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
+          <div class="absolute bottom-2 right-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
         </div>
-        <div class="mt-3 sm:mt-4">
-          <p class="text-sm sm:text-xl font-bold inline-block px-3 sm:px-6 py-1.5 sm:py-2 bg-red-600 text-white sm:transform sm:rotate-1" style="font-family: 'Courier New', monospace; box-shadow: 2px 2px 0px rgba(0,0,0,0.3);">
-            ★ PÁGINA 1 DE {totalPages} ★
-          </p>
+
+        <!-- Badge de página -->
+        <div class="mt-4 sm:mt-6">
+          <div class="inline-block bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-4 sm:px-8 py-2 sm:py-3 border-4 border-black rounded-xl relative" style="box-shadow: 0 6px 0px #000, 0 8px 12px rgba(0,0,0,0.4);">
+            <p class="text-xs sm:text-base font-bold text-white retro-text">
+              PAGE 1/{totalPages}
+            </p>
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-20 rounded-xl"></div>
+          </div>
         </div>
       </div>
 
       <!-- Grid de Pokémon -->
       <section
         aria-label="Listado de Pokemones"
-        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-8"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6 mb-8"
       >
         {
           data.results.map((pokemones) => (
@@ -54,22 +80,27 @@ const totalPages = Math.ceil(totalData.count / 10);
         }
       </section>
 
-      <!-- Paginación -->
-      <nav class="mt-8 sm:mt-12 flex flex-wrap justify-center items-center gap-2 sm:gap-4" aria-label="Paginación">
-        <span class="px-3 sm:px-6 py-2 sm:py-3 bg-gray-400 text-white font-bold border-2 sm:border-4 border-gray-600 opacity-50 text-xs sm:text-base" style="box-shadow: 2px 2px 0px rgba(0,0,0,0.2); font-family: 'Courier New', monospace;">
-          ← ANTERIOR
-        </span>
+      <!-- Paginación estilo D-Pad -->
+      <nav class="mt-8 sm:mt-12 flex flex-wrap justify-center items-center gap-2 sm:gap-4 mb-8" aria-label="Paginación">
+        <!-- Botón anterior deshabilitado -->
+        <div class="bg-gray-500 px-4 sm:px-6 py-3 sm:py-4 border-4 border-gray-700 rounded-lg opacity-50 text-xs sm:text-sm font-bold text-white retro-text cursor-not-allowed" style="box-shadow: 0 4px 0px #374151, 0 6px 8px rgba(0,0,0,0.3);">
+          ◄ PREV
+        </div>
 
-        <span class="px-3 sm:px-6 py-2 sm:py-3 bg-red-600 text-white font-bold border-2 sm:border-4 border-red-800 text-xs sm:text-base" style="box-shadow: 2px 2px 0px rgba(0,0,0,0.2); font-family: 'Courier New', monospace;">
-          1 / {totalPages}
-        </span>
+        <!-- Página actual -->
+        <div class="bg-gradient-to-b from-yellow-400 to-yellow-600 px-6 sm:px-8 py-3 sm:py-4 border-4 border-black rounded-lg text-xs sm:text-base font-bold text-black retro-text relative" style="box-shadow: 0 4px 0px #000, 0 6px 12px rgba(0,0,0,0.4);">
+          <span class="relative z-10">1 / {totalPages}</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-10 rounded-lg"></div>
+        </div>
 
+        <!-- Botón siguiente -->
         <a
           href="/pokemons/page/2"
-          class="px-3 sm:px-6 py-2 sm:py-3 bg-amber-100 border-2 sm:border-4 border-amber-800 font-bold sm:transform hover:rotate-1 transition-transform text-xs sm:text-base"
-          style="box-shadow: 2px 2px 0px rgba(0,0,0,0.2); font-family: 'Courier New', monospace; color: #b45309;"
+          class="bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 px-4 sm:px-6 py-3 sm:py-4 border-4 border-black rounded-lg transform hover:scale-105 active:scale-95 transition-all duration-150 text-xs sm:text-sm font-bold text-white retro-text relative"
+          style="box-shadow: 0 4px 0px #000, 0 6px 12px rgba(0,0,0,0.4);"
         >
-          SIGUIENTE →
+          <span class="relative z-10">NEXT ►</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-10 rounded-lg"></div>
         </a>
       </nav>
     </div>

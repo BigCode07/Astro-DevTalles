@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import { siteInfo } from '../consts/site-info';
+import NavBar from '../components/shared/NavBar.astro';
 
 interface Props {
     title: string;
@@ -32,172 +33,236 @@ const {title = siteInfo.title, description = siteInfo.description, image} = Astr
 		<!-- Required -->
 		<title>{title}</title>
 
+		<!-- Google Fonts - Press Start 2P para un look más retro -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 		<ClientRouter />
 
 		<style is:global>
+			:root {
+				--gb-screen: #9bbc0f;
+				--gb-dark: #0f380f;
+				--gb-mid: #306230;
+				--gb-light: #8bac0f;
+				--pixel-border: 4px;
+			}
+
 			@view-transition {
 				navigation: auto;
 			}
 
-			/* Animaciones personalizadas para las transiciones */
+			/* Animaciones tipo Game Boy */
 			::view-transition-old(root),
 			::view-transition-new(root) {
-				animation-duration: 0.4s;
-				animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+				animation-duration: 0.3s;
+				animation-timing-function: steps(4);
 			}
 
 			::view-transition-old(root) {
-				animation-name: fade-out;
+				animation-name: pixelate-out;
 			}
 
 			::view-transition-new(root) {
-				animation-name: fade-in;
+				animation-name: pixelate-in;
 			}
 
-			@keyframes fade-out {
+			@keyframes pixelate-out {
 				to {
 					opacity: 0;
-					transform: scale(0.95);
+					filter: brightness(2);
 				}
 			}
 
-			@keyframes fade-in {
+			@keyframes pixelate-in {
 				from {
 					opacity: 0;
-					transform: scale(0.95);
+					filter: brightness(2);
 				}
 			}
 
-			/* Animación especial para las tarjetas de Pokémon */
+			/* Animación especial para las tarjetas - Efecto Game Boy */
 			::view-transition-old(pokemon-card),
 			::view-transition-new(pokemon-card) {
-				animation-duration: 0.5s;
+				animation-duration: 0.4s;
+				animation-timing-function: steps(8);
 			}
 
 			::view-transition-old(pokemon-card) {
-				animation-name: slide-out;
+				animation-name: card-dissolve;
 			}
 
 			::view-transition-new(pokemon-card) {
-				animation-name: slide-in;
+				animation-name: card-appear;
 			}
 
-			@keyframes slide-out {
+			@keyframes card-dissolve {
 				to {
 					opacity: 0;
-					transform: translateY(-20px);
+					transform: scale(0.8);
+					filter: brightness(3);
 				}
 			}
 
-			@keyframes slide-in {
+			@keyframes card-appear {
 				from {
 					opacity: 0;
-					transform: translateY(20px);
+					transform: scale(1.2);
+					filter: brightness(0);
 				}
 			}
 
-			/* Estilos 3D optimizados para las tarjetas de Pokémon */
+			/* Estilos retro para las tarjetas de Pokémon */
 			.pokemon-card {
-				transform-style: preserve-3d;
-				transition: transform 0.3s ease-out;
-				will-change: transform;
-				backface-visibility: hidden;
+				position: relative;
+				transition: all 0.2s ease;
+				image-rendering: pixelated;
+				image-rendering: -moz-crisp-edges;
+				image-rendering: crisp-edges;
 			}
 
 			.pokemon-card:hover {
-				transform: translateY(-20px) translateZ(40px) scale(1.12);
-				z-index: 100;
+				transform: translateY(-8px) scale(1.05);
+				filter: brightness(1.1) contrast(1.1);
 			}
 
-			.pokemon-card-inner {
-				transform-style: preserve-3d;
-				transition: transform 0.3s ease-out;
-				backface-visibility: hidden;
+			.pokemon-card:active {
+				transform: translateY(-4px) scale(1.02);
 			}
 
-			.pokemon-card:hover .pokemon-card-inner {
-				transform: translateZ(20px);
-			}
-
-			/* Efecto 3D optimizado para las imágenes */
-			.pokemon-image-3d {
-				transform-style: preserve-3d;
-				transition: transform 0.3s ease-out;
-				will-change: transform;
-				backface-visibility: hidden;
-			}
-
-			.pokemon-card:hover .pokemon-image-3d {
-				transform: translateZ(30px) scale(1.25);
-			}
-
-			/* Efecto de brillo simplificado */
-			.pokemon-card::before {
+			/* Efecto de escaneo CRT */
+			.pokemon-card::after {
 				content: '';
 				position: absolute;
 				top: 0;
 				left: 0;
 				right: 0;
 				bottom: 0;
-				background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+				background: repeating-linear-gradient(
+					0deg,
+					rgba(0, 0, 0, 0.03) 0px,
+					rgba(0, 0, 0, 0.03) 1px,
+					transparent 1px,
+					transparent 2px
+				);
+				pointer-events: none;
+				border-radius: 12px;
+				opacity: 0.5;
+			}
+
+			/* Animación de brillo tipo holográfico de cartas */
+			.pokemon-card::before {
+				content: '';
+				position: absolute;
+				top: -50%;
+				left: -50%;
+				width: 200%;
+				height: 200%;
+				background: linear-gradient(
+					45deg,
+					transparent 30%,
+					rgba(255, 255, 255, 0.1) 50%,
+					transparent 70%
+				);
 				opacity: 0;
 				transition: opacity 0.3s ease;
 				pointer-events: none;
-				border-radius: 0.5rem;
-				z-index: 10;
+				border-radius: 12px;
+				transform: rotate(45deg);
 			}
 
 			.pokemon-card:hover::before {
 				opacity: 1;
+				animation: holographic 2s linear infinite;
+			}
+
+			@keyframes holographic {
+				0% {
+					transform: translateX(-100%) rotate(45deg);
+				}
+				100% {
+					transform: translateX(100%) rotate(45deg);
+				}
+			}
+
+			/* Efecto pixelado en imágenes */
+			.pokemon-image-retro {
+				image-rendering: pixelated;
+				image-rendering: -moz-crisp-edges;
+				image-rendering: crisp-edges;
+				transition: all 0.2s ease;
+			}
+
+			.pokemon-card:hover .pokemon-image-retro {
+				transform: scale(1.15);
+				filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
 			}
 
 			/* Animación flotante para tarjetas grandes */
 			.pokemon-big-card {
-				animation: float-3d 4s ease-in-out infinite;
-				transform-style: preserve-3d;
+				animation: float-retro 3s ease-in-out infinite;
 			}
 
-			@keyframes float-3d {
+			@keyframes float-retro {
 				0%, 100% {
-					transform: translateY(0) rotateY(0deg);
-				}
-				25% {
-					transform: translateY(-10px) rotateY(5deg);
+					transform: translateY(0px);
 				}
 				50% {
-					transform: translateY(-15px) rotateY(0deg);
-				}
-				75% {
-					transform: translateY(-10px) rotateY(-5deg);
+					transform: translateY(-10px);
 				}
 			}
 
-			/* Efecto parallax optimizado */
-			.pokemon-card {
-				position: relative;
+			/* Efecto de pulsación en badges */
+			.pokemon-badge {
+				animation: pulse-badge 2s ease-in-out infinite;
 			}
 
-			.pokemon-card .pokemon-badge {
-				transition: transform 0.3s ease-out;
-				transform-style: preserve-3d;
-				backface-visibility: hidden;
+			@keyframes pulse-badge {
+				0%, 100% {
+					transform: scale(1);
+				}
+				50% {
+					transform: scale(1.05);
+				}
 			}
 
-			.pokemon-card:hover .pokemon-badge {
-				transform: translateZ(15px) scale(1.05);
+			/* Tipografía pixelada */
+			.retro-text {
+				font-family: 'Press Start 2P', 'Courier New', monospace;
+				text-shadow:
+					2px 2px 0px rgba(0, 0, 0, 0.3),
+					4px 4px 0px rgba(0, 0, 0, 0.1);
+				letter-spacing: 1px;
 			}
 
-			/* Sombras optimizadas con box-shadow en lugar de drop-shadow */
+			/* Bordes pixelados */
+			.pixel-border {
+				border-style: solid;
+				border-image:
+					repeating-linear-gradient(90deg, #000 0, #000 4px, transparent 4px, transparent 8px) 4;
+			}
+
+			/* Sombras optimizadas estilo retro */
 			.pokemon-card:hover {
 				box-shadow:
-					0 30px 60px rgba(0,0,0,0.3),
-					0 15px 30px rgba(0,0,0,0.2);
+					8px 8px 0px rgba(0, 0, 0, 0.3),
+					12px 12px 0px rgba(0, 0, 0, 0.15),
+					0 0 30px rgba(255, 255, 255, 0.2);
+			}
+
+			/* Efecto de resplandor tipo Game Boy */
+			.gb-glow {
+				box-shadow:
+					inset 0 0 20px rgba(155, 188, 15, 0.1),
+					0 0 10px rgba(155, 188, 15, 0.3);
 			}
 		</style>
 	</head>
 	<body class="m-0 p-0">
+		<NavBar />
 		<main>
-        <slot />
-        </main>
-    </body>
+			<slot />
+		</main>
+	</body>
 </html>
