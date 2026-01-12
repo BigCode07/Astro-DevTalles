@@ -1,4 +1,6 @@
 ---
+import FavoriteButton from "../shared/FavoriteButton.astro";
+
 interface Props {
   name: string;
   url: string;
@@ -27,6 +29,9 @@ const cardColor = cardColors[colorIndex];
 
 {isBig ? (
   <div class="pokemon-big-card bg-gradient-to-br from-amber-50 via-white to-amber-100 rounded-3xl border-8 border-amber-900 flex flex-col justify-center items-center p-8 md:p-12 relative w-full overflow-hidden" style="box-shadow: 0 16px 32px rgba(0,0,0,0.4), 0 8px 16px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.5);">
+
+    <!-- Botón de favorito -->
+    <FavoriteButton name={name} url={url} />
 
     <!-- Esquinas decorativas tipo cartas vintage -->
     <div class="absolute top-4 left-4 w-16 h-16 border-t-4 border-l-4 border-amber-700 rounded-tl-2xl"></div>
@@ -59,6 +64,9 @@ const cardColor = cardColors[colorIndex];
     style="box-shadow: 0 8px 16px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3);"
     transition:name={`pokemon-card-${id}`}
   >
+    <!-- Botón de favorito -->
+    <FavoriteButton name={name} url={url} />
+
     <!-- Badge de número -->
     <div class={`absolute top-2 right-2 ${cardColor.accent} w-12 h-12 rounded-full border-3 border-black flex items-center justify-center pokemon-badge z-20`} style="box-shadow: 0 2px 6px rgba(0,0,0,0.4);">
       <span class="text-xs font-black text-black" style="font-family: 'Press Start 2P', monospace;">#{id}</span>

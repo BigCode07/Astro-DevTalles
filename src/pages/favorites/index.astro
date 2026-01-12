@@ -1,9 +1,209 @@
 ---
 import MainLayout from "../../layouts/MainLayout.astro";
-
-
 ---
 
-<MainLayout title="Favoritos">
-    
+<MainLayout title="Favoritos - Pokédex">
+  <div class="min-h-screen w-full py-6 sm:py-10 px-3 sm:px-4 relative overflow-hidden" style="background: linear-gradient(135deg, #9bbc0f 0%, #8bac0f 50%, #306230 100%);">
+    <!-- Patrón de fondo tipo Game Boy -->
+    <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+
+    <!-- Patrón de puntos -->
+    <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle, #000 2px, transparent 2px); background-size: 20px 20px;"></div>
+
+    <div class="container mx-auto max-w-7xl relative z-10">
+      <!-- Título estilo Game Boy Screen -->
+      <div class="text-center mb-6 md:mb-10">
+        <div class="inline-block bg-gradient-to-br from-gray-800 via-gray-900 to-black px-8 sm:px-16 py-6 sm:py-10 border-8 border-black rounded-3xl relative" style="box-shadow: 0 16px 32px rgba(0,0,0,0.6), inset 0 4px 8px rgba(255,255,255,0.1);">
+          <!-- Pantalla interior -->
+          <div class="bg-gradient-to-br from-amber-100 to-amber-200 px-6 sm:px-12 py-4 sm:py-6 border-4 border-gray-700 rounded-xl relative overflow-hidden" style="box-shadow: inset 0 4px 12px rgba(0,0,0,0.3), 0 2px 4px rgba(255,255,255,0.2);">
+            <!-- Efecto de escaneo CRT -->
+            <div class="absolute inset-0 opacity-30 pointer-events-none" style="background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+
+            <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-center retro-text relative z-10 whitespace-nowrap" style="color: #0f380f; text-shadow: 2px 2px 0px rgba(155, 188, 15, 0.3);">
+              <span class="text-red-600">♥</span> FAVORITOS
+            </h1>
+          </div>
+
+          <!-- LED indicador -->
+          <div class="absolute -right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-red-500 rounded-full border-2 border-black animate-pulse" style="box-shadow: 0 0 12px rgba(239, 68, 68, 0.8), inset 0 1px 2px rgba(255,255,255,0.5);"></div>
+
+          <!-- Tornillos decorativos -->
+          <div class="absolute top-2 left-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
+          <div class="absolute top-2 right-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
+          <div class="absolute bottom-2 left-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
+          <div class="absolute bottom-2 right-2 w-3 h-3 bg-gray-600 rounded-full border border-gray-800" style="box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);"></div>
+        </div>
+      </div>
+
+      <!-- Mensaje cuando está vacío -->
+      <div id="empty-message" class="hidden text-center py-12">
+        <div class="inline-block bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-2xl border-6 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-6 border-4 border-gray-600">
+            <p class="text-xl font-bold retro-text mb-4" style="color: #0f380f;">
+              No hay pokémons favoritos
+            </p>
+            <p class="text-sm retro-text" style="color: #306230;">
+              Agrega pokémons haciendo click en el ♥
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de pokémons favoritos -->
+      <div id="favorites-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 md:gap-6"></div>
+    </div>
+  </div>
 </MainLayout>
+
+<script>
+  import { FavoritesManager } from '../../utils/favorites';
+
+  function renderFavorites() {
+    const favoritesGrid = document.getElementById('favorites-grid');
+    const emptyMessage = document.getElementById('empty-message');
+
+    if (!favoritesGrid || !emptyMessage) return;
+
+    const favorites = FavoritesManager.getFavorites();
+
+    if (favorites.length === 0) {
+      emptyMessage.classList.remove('hidden');
+      favoritesGrid.innerHTML = '';
+      return;
+    }
+
+    emptyMessage.classList.add('hidden');
+
+    // Crear las tarjetas de pokémon
+    favoritesGrid.innerHTML = favorites
+      .map((pokemon) => {
+        const id = pokemon.url.split('/').filter(Boolean).pop();
+        const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+
+        // Colores para las tarjetas
+        const cardColors = [
+          { bg: 'from-red-400 to-red-600', border: 'border-red-700', accent: 'bg-red-200' },
+          { bg: 'from-blue-400 to-blue-600', border: 'border-blue-700', accent: 'bg-blue-200' },
+          { bg: 'from-green-400 to-green-600', border: 'border-green-700', accent: 'bg-green-200' },
+          { bg: 'from-yellow-400 to-yellow-600', border: 'border-yellow-700', accent: 'bg-yellow-200' },
+          { bg: 'from-purple-400 to-purple-600', border: 'border-purple-700', accent: 'bg-purple-200' },
+          { bg: 'from-pink-400 to-pink-600', border: 'border-pink-700', accent: 'bg-pink-200' },
+          { bg: 'from-indigo-400 to-indigo-600', border: 'border-indigo-700', accent: 'bg-indigo-200' },
+          { bg: 'from-orange-400 to-orange-600', border: 'border-orange-700', accent: 'bg-orange-200' },
+        ];
+        const colorIndex = parseInt(id || '0') % cardColors.length;
+        const cardColor = cardColors[colorIndex];
+
+        return `
+          <a
+            href="/pokemons/${pokemon.name}"
+            class="pokemon-card bg-gradient-to-br ${cardColor.bg} rounded-2xl border-6 ${cardColor.border} flex flex-col justify-between items-center p-3 relative group overflow-hidden aspect-[2/3] cursor-pointer"
+            style="box-shadow: 0 8px 16px rgba(0,0,0,0.3), 0 4px 8px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3);"
+          >
+            <!-- Botón de favorito -->
+            <button
+              class="favorite-button absolute top-2 left-2 z-30 w-10 h-10 bg-white bg-opacity-90 backdrop-blur-sm rounded-full border-3 border-black flex items-center justify-center cursor-pointer hover:bg-opacity-100 hover:scale-110 active:scale-95 transition-all duration-200 shadow-lg"
+              data-name="${pokemon.name}"
+              data-url="${pokemon.url}"
+              style="box-shadow: 0 3px 8px rgba(0,0,0,0.4);"
+            >
+              <svg class="heart-filled w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" class="text-red-600" />
+              </svg>
+            </button>
+
+            <!-- Badge de número -->
+            <div class="absolute top-2 right-2 ${cardColor.accent} w-12 h-12 rounded-full border-3 border-black flex items-center justify-center pokemon-badge z-20" style="box-shadow: 0 2px 6px rgba(0,0,0,0.4);">
+              <span class="text-xs font-black text-black" style="font-family: 'Press Start 2P', monospace;">#${id}</span>
+            </div>
+
+            <!-- Contenedor de imagen -->
+            <div class="flex-1 flex items-center justify-center w-full mt-6 relative">
+              <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-3 border-4 border-black w-full h-full flex items-center justify-center relative overflow-hidden" style="box-shadow: inset 0 4px 8px rgba(0,0,0,0.2), 0 2px 4px rgba(255,255,255,0.5);">
+                <div class="absolute inset-0 opacity-20 pointer-events-none" style="background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
+                <img src="${imageSrc}" alt="${pokemon.name}" class="w-full h-full max-w-[120px] max-h-[120px] object-contain pokemon-image-retro relative z-10">
+              </div>
+            </div>
+
+            <!-- Nombre -->
+            <div class="w-full flex flex-col items-center gap-2 pb-2 mt-2 relative z-10">
+              <div class="bg-black bg-opacity-20 backdrop-blur-sm rounded-lg px-3 py-2 w-full">
+                <span class="capitalize font-bold text-white text-center block text-sm drop-shadow-lg" style="font-family: 'Press Start 2P', monospace; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">${pokemon.name}</span>
+              </div>
+
+              <!-- Indicadores -->
+              <div class="flex gap-2">
+                <div class="w-4 h-4 rounded-sm bg-red-500 border-2 border-red-700 shadow-md" style="box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.3);"></div>
+                <div class="w-4 h-4 rounded-sm bg-blue-500 border-2 border-blue-700 shadow-md" style="box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.3);"></div>
+                <div class="w-4 h-4 rounded-sm bg-yellow-400 border-2 border-yellow-600 shadow-md" style="box-shadow: 0 2px 4px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.3);"></div>
+              </div>
+            </div>
+
+            <!-- Estrellas decorativas -->
+            <div class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-10">
+              <div class="absolute top-4 left-4 text-white text-2xl">★</div>
+              <div class="absolute top-8 right-8 text-white text-xl">★</div>
+              <div class="absolute bottom-12 left-8 text-white text-lg">★</div>
+            </div>
+          </a>
+        `;
+      })
+      .join('');
+
+    // Re-inicializar los botones de favoritos
+    initializeFavoriteButtons();
+  }
+
+  function initializeFavoriteButtons() {
+    const buttons = document.querySelectorAll('.favorite-button');
+
+    buttons.forEach((button) => {
+      const btn = button as HTMLButtonElement;
+
+      // Remover listeners previos clonando el botón
+      const newBtn = btn.cloneNode(true) as HTMLButtonElement;
+      btn.parentNode?.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const name = newBtn.dataset.name;
+        const url = newBtn.dataset.url;
+
+        if (name && url) {
+          // Importar y usar FavoritesManager
+          import('../../utils/favorites').then(({ FavoritesManager }) => {
+            FavoritesManager.removeFavorite(name);
+
+            // Animación de salida
+            const card = newBtn.closest('.pokemon-card');
+            if (card) {
+              card.classList.add('scale-0', 'opacity-0');
+              setTimeout(() => {
+                renderFavorites();
+              }, 300);
+            }
+          });
+        }
+      });
+    });
+  }
+
+  // Renderizar favoritos al cargar la página
+  document.addEventListener('DOMContentLoaded', renderFavorites);
+  document.addEventListener('astro:page-load', renderFavorites);
+
+  // Escuchar cambios en favoritos
+  window.addEventListener('favoritesChanged', renderFavorites);
+</script>
+
+<style>
+  .pokemon-card {
+    transition: all 0.3s ease;
+  }
+
+  .pokemon-card:hover {
+    transform: translateY(-8px);
+  }
+</style>
