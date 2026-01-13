@@ -37,9 +37,9 @@ const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pok
 
       <!-- Título estilo Game Boy Screen -->
       <div class="text-center mb-4 md:mb-6">
-        <div class="inline-block bg-gradient-to-br from-gray-800 via-gray-900 to-black px-8 sm:px-16 py-6 sm:py-10 border-8 border-black rounded-3xl relative" style="box-shadow: 0 16px 32px rgba(0,0,0,0.6), inset 0 4px 8px rgba(255,255,255,0.1);">
+        <div class="inline-block bg-linear-to-br from-gray-800 via-gray-900 to-black px-8 sm:px-16 py-6 sm:py-10 border-8 border-black rounded-3xl relative" style="box-shadow: 0 16px 32px rgba(0,0,0,0.6), inset 0 4px 8px rgba(255,255,255,0.1);">
           <!-- Pantalla interior -->
-          <div class="bg-gradient-to-br from-amber-100 to-amber-200 px-6 sm:px-12 py-4 sm:py-6 border-4 border-gray-700 rounded-xl relative overflow-hidden" style="box-shadow: inset 0 4px 12px rgba(0,0,0,0.3), 0 2px 4px rgba(255,255,255,0.2);">
+          <div class="bg-linear-to-br from-amber-100 to-amber-200 px-6 sm:px-12 py-4 sm:py-6 border-4 border-gray-700 rounded-xl relative overflow-hidden" style="box-shadow: inset 0 4px 12px rgba(0,0,0,0.3), 0 2px 4px rgba(255,255,255,0.2);">
             <!-- Efecto de escaneo CRT -->
             <div class="absolute inset-0 opacity-30 pointer-events-none" style="background: repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px);"></div>
 
@@ -61,20 +61,20 @@ const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pok
 
       <!-- Tarjeta del Pokémon -->
       <div class="text-center mb-6 md:mb-8">
-        <div class="inline-block w-full max-w-md bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-2xl border-6 md:border-8 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-300">
-          <div class="bg-gradient-to-br from-amber-50 via-white to-amber-100 rounded-xl p-6 md:p-8 border-4 border-gray-600" style="box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);">
+        <div class="inline-block w-full max-w-md bg-linear-to-br from-gray-700 via-gray-800 to-gray-900 rounded-2xl border-6 md:border-8 border-black p-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-300">
+          <div class="bg-linear-to-br from-amber-50 via-white to-amber-100 rounded-xl p-6 md:p-8 border-4 border-gray-600" style="box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);">
             <PokemonCard name={name} url={url} isBig />
 
             <!-- Reproductor de audio personalizado -->
-            <div class="mt-6 bg-gradient-to-br from-red-600 via-red-500 to-red-600 rounded-xl border-4 border-black p-5 shadow-lg relative" style="box-shadow: 0 6px 0px #000, 0 8px 16px rgba(0,0,0,0.4);">
-              <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-20 rounded-xl pointer-events-none"></div>
+            <div class="mt-6 bg-linear-to-br from-red-600 via-red-500 to-red-600 rounded-xl border-4 border-black p-5 shadow-lg relative" style="box-shadow: 0 6px 0px #000, 0 8px 16px rgba(0,0,0,0.4);">
+              <div class="absolute inset-0 bg-linear-to-t from-black to-transparent opacity-20 rounded-xl pointer-events-none"></div>
 
               <p class="text-white text-sm font-bold text-center mb-3 retro-text relative z-10" style="text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">GRITO POKÉMON</p>
 
               <div class="flex items-center gap-3 relative z-10">
-                <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-yellow-300 to-yellow-500 rounded-full border-4 border-black flex items-center justify-center shadow-md relative">
+                <div class="shrink-0 w-12 h-12 bg-linear-to-br from-yellow-300 to-yellow-500 rounded-full border-4 border-black flex items-center justify-center shadow-md relative">
                   <span class="text-2xl">🔊</span>
-                  <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-10 rounded-full"></div>
+                  <div class="absolute inset-0 bg-linear-to-t from-black to-transparent opacity-10 rounded-full"></div>
                 </div>
                 <div class="flex-1 bg-gray-900 bg-opacity-30 rounded-lg p-2 border-2 border-black">
                   <audio controls class="w-full h-10" style="filter: sepia(0.1) saturate(1.1) contrast(1.05);">
@@ -92,14 +92,15 @@ const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pok
       <div class="text-center">
         <button
           onclick="window.location.href = sessionStorage.getItem('pokemonListPage') ? `/pokemons/page/${sessionStorage.getItem('pokemonListPage')}` : '/'"
-          class="bg-gradient-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 px-6 sm:px-8 py-3 sm:py-4 border-4 border-black rounded-lg transform hover:scale-105 active:scale-95 transition-all duration-150 text-sm sm:text-base font-bold text-white retro-text relative cursor-pointer inline-block"
+          class="bg-linear-to-b from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 px-6 sm:px-8 py-3 sm:py-4 border-4 border-black rounded-lg transform hover:scale-105 active:scale-95 transition-all duration-150 text-sm sm:text-base font-bold text-white retro-text relative cursor-pointer inline-block"
           style="box-shadow: 0 4px 0px #000, 0 6px 12px rgba(0,0,0,0.4);"
         >
           <span class="relative z-10">◄ VOLVER</span>
-          <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-10 rounded-lg"></div>
+          <div class="absolute inset-0 bg-linear-to-t from-black to-transparent opacity-10 rounded-lg"></div>
         </button>
       </div>
 
     </div>
   </div>
 </MainLayout>
+
