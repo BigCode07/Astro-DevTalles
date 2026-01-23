@@ -2,7 +2,8 @@
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
     "paths": {
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
+      "@images/*": ["./src/assets/images/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
