@@ -1,4 +1,4 @@
 export const siteConfig = {
-    title: "Blog Platform",
-    description: "A platform to share your thoughts and ideas.",
-}
+  title: "Fernando's Blog",
+  description: 'Blog oficial de Fernando Herrera - Web developer',
+};

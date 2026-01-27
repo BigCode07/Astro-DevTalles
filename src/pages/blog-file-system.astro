@@ -1,40 +1,24 @@
 ---
-import BlogPost from "../components/BlogPost.astro";
-import { siteConfig } from "../config/site-config";
-import MainLayout from "../layouts/MainLayout.astro";
+import BlogPost from '../components/BlogPost.astro';
+import { siteConfig } from '../config/site-config';
+import MainLayout from '../layouts/MainLayout.astro';
 
-// import.meta.glob reemplaza a Astro.glob (deprecado en Astro 5)
-const postModules = import.meta.glob<{
-  frontmatter: {
-    title: string;
-    date: string;
-    description: string;
-    image: string;
-  };
-  url: string;
-}>("./posts-old/*.{md,mdx}", { eager: true });
-
-const posts = Object.values(postModules);
+const posts = await Astro.glob('./posts-old/*.{md,mdx}');
 ---
-<MainLayout title="Nicolas's Blog">
-	<!-- component -->
-<section class="bg-white dark:bg-gray-900">
+
+<MainLayout title="Fernando's Blog">
+  <!-- component -->
+  <section class="bg-white dark:bg-gray-900">
     <div class="container px-6 py-10 mx-auto">
-        <h1 class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white">{siteConfig.title}</h1>
+      <h1
+        class="text-3xl font-semibold text-gray-800 capitalize lg:text-4xl dark:text-white"
+      >
+        {siteConfig.title}
+      </h1>
 
-        <div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
-            {
-                posts.map((post) => (
-                    <BlogPost
-                        title={post.frontmatter.title}
-                        date={post.frontmatter.date}
-                        image={post.frontmatter.image}
-                        url={post.url}
-                    />
-                ))
-            }
-        </div>
+      <div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
+        {posts.map((post) => <BlogPost {...post} />)}
+      </div>
     </div>
-</section>
-
+  </section>
 </MainLayout>
